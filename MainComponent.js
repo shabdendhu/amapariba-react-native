@@ -6,16 +6,13 @@ import Layout from "./components/osComponents/SafeAreaView";
 import Home from "./components/Home";
 import Category from "./components/Category";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-// import { createNativeStackNavigator } from "@react-navigation/native-stack";
-// const Stack = createNativeStackNavigator();
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+const Stack = createNativeStackNavigator();
 
-const Tab = createBottomTabNavigator();
 const MainComponent = () => {
   return (
-    <Tab.Navigator
+    <Stack.Navigator
       screenOptions={{
-      
         headerRight: () => (
           <FontAwesome
             color="white"
@@ -32,9 +29,9 @@ const MainComponent = () => {
         },
       }}
     >
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Category" component={Category} />
-    </Tab.Navigator>
+      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Category" component={Category} />
+    </Stack.Navigator>
     // <Layout>
     //   <Headers />
     //   <Home />
