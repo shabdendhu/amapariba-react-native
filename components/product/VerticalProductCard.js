@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import React from "react";
 import AmountPicker from "./AmountPicker";
+import AddRemoveButton from "./AddRemoveButton";
 
 const VerticalProductCard = () => {
   const generateBoxShadowStyle = (
@@ -51,6 +52,10 @@ const VerticalProductCard = () => {
         <Text style={styles.priceText}>₹45 ₹30</Text>
       </View>
      <AmountPicker/>
+     <View style={{marginTop:20}}>
+
+     <AddRemoveButton/>
+     </View>
     </View>
   );
 };
@@ -59,7 +64,7 @@ export default VerticalProductCard;
 
 const styles = StyleSheet.create({
   card: {
-    height: 300,
+    height:290,
     marginRight: 10,
     borderRadius: 10,
     width: 150,
