@@ -6,11 +6,23 @@ import {
   Text,
   TouchableOpacity,
   View,
+  FlatList,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Labels from "../templates/Labels";
 import { useNavigation } from "@react-navigation/native";
+import { gql, useQuery } from "@apollo/client";
 
+const CategoruQuery = gql`
+  query {
+    get_allCategory {
+      id
+      name
+      image
+      is_popular
+    }
+  }
+`;
 const CategoryLabel = () => {
   return (
     <View style={[styles.categryContaineer, styles.boxShadow, styles.card]}>
@@ -24,6 +36,7 @@ const CategoryLabel = () => {
 };
 const Category = () => {
   const navigator = useNavigation();
+  const [catgory, setCatgory] = useState([]);
   const generateBoxShadowStyle = (
     xOffset,
     yOffset,
@@ -49,19 +62,67 @@ const Category = () => {
   };
 
   generateBoxShadowStyle(-2, 4, "#171717", 0.2, 3, 5, "#171717");
+  // const Query = all === true ? CategoruQuery : PopularCategoruQuery;
+  const res = useQuery(CategoruQuery);
+  console.log('loading',res.loading,res.data);
+  // useEffect(() => {
+  //   // setShowLoader(true);
+  //   // if (networkStatus === 7) {
+  //   //   console.log("eoifuh");
+  //   //   console.log(data.get_allCategory);
+  //   //   // setProductCategory(
+  //   //   //   all === true ? data.get_allCategory : data.get_PopularCategory
+  //   //   // );
+  //   //   // setShowLoader(false);
+  //   // }
+  // }, [loading]);
+  const axios = require("axios");
 
+  const endpoint = "http://localhost:9000/api";
+  const headers = {
+    "content-type": "application/json",
+      "Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDYsImlhdCI6MTY1MjE1ODkxMX0.l5Jzps98vI_-eiIDyVUDMLs3TxU_XxBOi_HQMwv4N_Y"
+  };
+  const graphqlQuery = {
+      "operationName": "get_allCategory",
+      "query": `query {
+        get_allCategory {
+          id
+          name
+          image
+          is_popular
+        }
+      }`,
+  };
+  
+  const response = axios({
+    url: endpoint,
+    method: 'post',
+    headers: headers,
+    data: graphqlQuery
+  });
+  
+  console.log(response.data); // data
+  console.log(response.errors); // errors if any
   return (
     <View>
       <Labels labels={"SHOP BY ITEM CATEGORY"} />
+        <Text style={{fontSize:30,color:'red',zIndex:99}}>loading</Text>
       <View style={styles.categoryCardHolder}>
-        <CategoryLabel />
-        <CategoryLabel />
-        <CategoryLabel />
-        <CategoryLabel />
-        <CategoryLabel />
-        <CategoryLabel />
-        <CategoryLabel />
-        <CategoryLabel />
+        {/* <FlatList
+           data={data}
+           renderItem={({item}) => <CategoryLabel />}
+           keyExtractor={(item) => item.id.toString()}
+         /> */}
+        {/* {data.map((e, i) => (
+          <CategoryLabel />
+        ))} */}
+
+{/* <CategoryLabel />
+<CategoryLabel />
+<CategoryLabel />
+<CategoryLabel /> */}
+
         <TouchableOpacity
           style={styles.moreButton}
           onPress={() => {
@@ -121,6 +182,6 @@ const styles = StyleSheet.create({
   },
   moreText: {
     color: "white",
-    fontSize:17
+    fontSize: 17,
   },
 });
